@@ -12,6 +12,16 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+/**
+ * creat by guo_hx
+ *
+ * 这个Sample主要用来帮助自己理解rxjava
+ *
+ * 练习rxjava的使用
+ * 熟悉rxjava的使用场景
+ *
+ */
+
 public class MainActivity extends AppCompatActivity {
 
     private ImageCollectorView mIcvMain;
