@@ -21,5 +21,5 @@ public class BitmapUtil {
         }
         return bitmap;
     }
-    
+
 }

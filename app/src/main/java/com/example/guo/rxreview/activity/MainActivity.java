@@ -10,8 +10,6 @@ import com.example.guo.rxreview.weiget.ImageCollectorView;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,15 +39,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 super.run();
-
                 for (int i = 0; i < pics.length; i++) {
                     final Bitmap bitmap = BitmapUtil.getBitmapFromResources(MainActivity.this, pics[i]);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mIcvMain.addImage(bitmap);
-                        }
-                    });
+                    runOnUiThread(() -> mIcvMain.addImage(bitmap));
                 }
             }
         }.start();
@@ -57,19 +49,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void showPicsRxJava(final Integer[] pics) {
         Observable.from(pics)
-                .map(new Func1<Integer, Bitmap>() {
-                    @Override
-                    public Bitmap call(Integer integer) {
-                        return BitmapUtil.getBitmapFromResources(MainActivity.this, integer);
-                    }
-                })
+                .map(integer -> BitmapUtil.getBitmapFromResources(MainActivity.this, integer))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Bitmap>() {
-                    @Override
-                    public void call(Bitmap bitmap) {
-                        mIcvMain.addImage(bitmap);
-                    }
-                });
+                .subscribe(bitmap -> {mIcvMain.addImage(bitmap);});
     }
 }
