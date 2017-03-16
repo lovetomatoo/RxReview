@@ -17,6 +17,7 @@ import com.example.guo.rxreview.weiget.ImageCollectorView;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -65,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
 
         //3.根据资源id展示图片
         showPicFromResId(drawableId);
+
+        //4.Schedulers--打印1234
+        printNums();
     }
 
     private void showPicsComm(final Integer[] pics) {
@@ -120,5 +124,14 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void printNums() {
+        Observable.just(1, 2, 3, 4)
+                .subscribeOn(Schedulers.io())//subscribe在io线程中执行
+                .observeOn(AndroidSchedulers.mainThread())//Subscriber的回调发生在主线程
+                .subscribe(integer -> {
+                    Log.d(TAG, "number: " + integer);
+                });
     }
 }

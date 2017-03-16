@@ -34,6 +34,26 @@
             //3.根据资源id展示图片
             showPicFromResId(drawableId);
 
+###线程控制Scheduler(调度器)
+
+* subscribeOn()
+    * 指定subscribe()所发生的的线程/事件产生的线程
+* observeOn()
+    * 指定Subscriber所运行的线程/事件消费的线程
+
+> Schedulers.immediate() 直接在当前线程运行，相当于不指定线程。
+
+> Schedulers.newThread() 总是启用新线程，并在新线程执行操作。
+
+> Schedulers.io() 行为和newThread()差不多，区别在于io()的内部实现是使用一个
+无数量上限的线程池，可以启用空闲线程。
+
+> Schedulers.computation() 计算所使用的的Scheduler。
+
+> Android有一个专门的AndroidSchedulers.mainThread(),它指定的操作将在Android主线程运行。
+
+
+
 
 
 
