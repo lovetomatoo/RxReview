@@ -1,18 +1,18 @@
 # RxReview
-##RxJavaSamples
+## RxJavaSamples
 
 
-###扩展的观察者模式
+### 扩展的观察者模式
     rxjava的异步实现，是通过一种扩展的观察者设计模式来实现的。
 
-###rxjava的3个基本概念
+### rxjava的3个基本概念
     1.Observable    被观察者
     2.Observer/Subscriber      观察者
     3.subscribe     订阅
         Observable和Observer通过subscribe()方法实现订阅关系，从而Observable
     可以在需要的时候发出事件来通知Observer。
 
-###基本实现
+### 基本实现
     1.创建Observer
         Observer即观察者，它决定事件触发的时候将有怎样的行为。
 
@@ -23,7 +23,7 @@
         observable.subscribe(observer)
         或observable.subscribe(subscriber)
 
-###Samples(同步)
+### Samples(同步)
             //1.展示图片
     //        showPicsComm(pics);
             showPicsRxJava(pics);
@@ -34,7 +34,7 @@
             //3.根据资源id展示图片
             showPicFromResId(drawableId);
 
-###线程控制Scheduler(调度器)
+### 线程控制Scheduler(调度器)
 
 * subscribeOn()
     * 指定subscribe()所发生的的线程/事件产生的线程

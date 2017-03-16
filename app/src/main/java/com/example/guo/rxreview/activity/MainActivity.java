@@ -22,12 +22,11 @@ import rx.schedulers.Schedulers;
 
 /**
  * creat by guo_hx
- *
+ * <p>
  * 这个Sample主要用来帮助自己理解rxjava
- *
+ * <p>
  * 练习rxjava的使用
  * 熟悉rxjava的使用场景
- *
  */
 
 public class MainActivity extends AppCompatActivity {
@@ -89,7 +88,9 @@ public class MainActivity extends AppCompatActivity {
                 .map(integer -> BitmapUtil.getBitmapFromResources(MainActivity.this, integer))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(bitmap -> {mIcvMain.addImage(bitmap);});
+                .subscribe(bitmap -> {
+                    mIcvMain.addImage(bitmap);
+                });
     }
 
     private void printStr(String[] str_names) {
@@ -101,29 +102,33 @@ public class MainActivity extends AppCompatActivity {
 
     private void showPicFromResId(int drawableId) {
         Observable.create(new Observable.OnSubscribe<Drawable>() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void call(Subscriber<? super Drawable> subscriber) {
+                Log.w(TAG, "showPicFromResId____subscribe____运行的线程为：" + Thread.currentThread().getName());
                 Drawable drawable = getDrawable(drawableId);
                 subscriber.onNext(drawable);
                 subscriber.onCompleted();
             }
-        }).subscribe(new Subscriber<Drawable>() {
-            @Override
-            public void onNext(Drawable drawable) {
-                mIvMain.setImageDrawable(drawable);
-            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Drawable>() {
+                    @Override
+                    public void onNext(Drawable drawable) {
+                        Log.w(TAG, "showPicFromResId____onNext____运行的线程为：" + Thread.currentThread().getName());
+                        mIvMain.setImageDrawable(drawable);
+                    }
 
-            @Override
-            public void onCompleted() {
+                    @Override
+                    public void onCompleted() {
 
-            }
+                    }
 
-            @Override
-            public void onError(Throwable e) {
-                Toast.makeText(MainActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(MainActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void printNums() {
