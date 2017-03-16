@@ -35,7 +35,7 @@
             showPicFromResId(drawableId);
 
 ### 线程控制Scheduler(调度器)
-
+#### 1.API
 * subscribeOn()
     * 指定subscribe()所发生的的线程/事件产生的线程
 * observeOn()
@@ -51,6 +51,44 @@
 > Schedulers.computation() 计算所使用的的Scheduler。
 
 > Android有一个专门的AndroidSchedulers.mainThread(),它指定的操作将在Android主线程运行。
+
+#### 2.原理
+
+
+### 变换
+
+所谓变换，就是将事件序列中的对象或整个序列进行加工处理，转换成不同的事件或事件序列。
+
+#### 1.API
+
+* map()
+
+* flatMap()
+
+map()和flatMap()的
+
+> 共同点：把传入的参数转换之后返回另一个对象
+
+> 不同点：flatMap()返回的是个Observable对象，并且这个Observable对象并不是
+被直接发送到Subscriber的回调方法中。
+
+flatMap()的原理：
+
+> 1.使用传入的事件对象创建一个Observable对象
+
+> 2.并不发送这个Observable，而是将它激活，于是它开始发送事件
+
+> 3.每一个创建出来的Observable对象发送的事件都被汇入同一个Observable，而这个
+Observable负责将这些事件统一交给Subscriber的回调方法。
+
+> 这三个步骤，把事件拆成了两级，通过一组新创建的 Observable 将初始的对象『铺平』之后通过统一路径分发了下去。而这个『铺平』就是 flatMap() 所谓的 flat。
+
+
+
+
+
+
+
 
 
 

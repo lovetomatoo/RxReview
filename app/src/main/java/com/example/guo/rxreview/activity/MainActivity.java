@@ -11,14 +11,21 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.guo.rxreview.R;
+import com.example.guo.rxreview.model.Student;
 import com.example.guo.rxreview.utils.BitmapUtil;
 import com.example.guo.rxreview.weiget.ImageCollectorView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
+
+import static com.example.guo.rxreview.model.Student.*;
 
 /**
  * creat by guo_hx
@@ -34,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private ImageCollectorView mIcvMain;
-    private ImageView mIvMain;
+    private ImageView mIvSecMain;
+    private ImageView mIvThrMain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +60,22 @@ public class MainActivity extends AppCompatActivity {
 
         int drawableId = R.mipmap.ic_launcher;
 
+        ArrayList<Student> studentList = new ArrayList<>();
+        for (int i_student = 0; i_student < 3; i_student++) {
+            Student student = new Student();
+            student.name = "学生" + i_student;
+            for (int j_course = 0; j_course < 2; j_course++) {
+                Course course = new Course();
+                course.courseName = "学生" + i_student + "____课程" + j_course;
+                student.courseList.add(course);
+            }
+            studentList.add(student);
+        }
+
 
         mIcvMain = (ImageCollectorView) findViewById(R.id.icv_main);
-        mIvMain = (ImageView) findViewById(R.id.iv_main);
+        mIvSecMain = (ImageView) findViewById(R.id.iv_sec_main);
+        mIvThrMain = (ImageView) findViewById(R.id.iv_thr_main);
 
         //1.展示图片
 //        showPicsComm(pics);
@@ -68,6 +89,13 @@ public class MainActivity extends AppCompatActivity {
 
         //4.Schedulers--打印1234
         printNums();
+
+        //5.map变换--String --> Bitmap
+        stringToBitmap();
+
+        //5.flatMap
+        printStudentName(studentList);
+        printStudentCourseName(studentList);
     }
 
     private void showPicsComm(final Integer[] pics) {
@@ -102,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showPicFromResId(int drawableId) {
         Observable.create(new Observable.OnSubscribe<Drawable>() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void call(Subscriber<? super Drawable> subscriber) {
                 Log.w(TAG, "showPicFromResId____subscribe____运行的线程为：" + Thread.currentThread().getName());
@@ -116,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onNext(Drawable drawable) {
                         Log.w(TAG, "showPicFromResId____onNext____运行的线程为：" + Thread.currentThread().getName());
-                        mIvMain.setImageDrawable(drawable);
+                        mIvSecMain.setImageDrawable(drawable);
                     }
 
                     @Override
@@ -139,4 +168,40 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "number: " + integer);
                 });
     }
+
+    private void stringToBitmap() {
+        Observable.just("level_256.png")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(s -> BitmapUtil.getBitmapFromAsset(MainActivity.this, s))
+                .subscribe(bitmap -> {
+                    mIvThrMain.setImageBitmap(bitmap);
+                });
+    }
+
+    private void printStudentName(ArrayList<Student> studentList) {
+        Observable.from(studentList)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(student -> student.name)
+                .subscribe(s -> {
+                    Log.i(TAG, s);
+                });
+    }
+
+    private void printStudentCourseName(ArrayList<Student> studentList) {
+        Observable.from(studentList)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .flatMap(new Func1<Student, Observable<Course>>() {
+                    @Override
+                    public Observable<Course> call(Student student) {
+                        return Observable.from(student.courseList);
+                    }
+                })
+                .subscribe(course -> {
+                    Log.i(TAG, course.courseName);
+                });
+    }
+
 }

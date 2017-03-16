@@ -10,8 +10,15 @@
         android:layout_height="wrap_content" />
 
     <ImageView
-        android:id="@+id/iv_main"
+        android:id="@+id/iv_sec_main"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp" />
+
+    <ImageView
+        android:id="@+id/iv_thr_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp" />
 
 </LinearLayout>
