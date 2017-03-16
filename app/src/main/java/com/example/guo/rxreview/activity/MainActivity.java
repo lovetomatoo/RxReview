@@ -1,14 +1,21 @@
 package com.example.guo.rxreview.activity;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.guo.rxreview.R;
 import com.example.guo.rxreview.utils.BitmapUtil;
 import com.example.guo.rxreview.weiget.ImageCollectorView;
 
 import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -24,7 +31,10 @@ import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
+
     private ImageCollectorView mIcvMain;
+    private ImageView mIvMain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +47,24 @@ public class MainActivity extends AppCompatActivity {
                 R.mipmap.img_player__like_purple,
                 R.mipmap.img_player__like_red,
                 R.mipmap.img_player__like_yellow};
-        mIcvMain = (ImageCollectorView) findViewById(R.id.icv_main);
 
+        String[] str_names = {"西毒欧阳锋", "东邪黄药师", "南帝段智兴", "北丐洪七公", "中神通王重阳"};
+
+        int drawableId = R.mipmap.ic_launcher;
+
+
+        mIcvMain = (ImageCollectorView) findViewById(R.id.icv_main);
+        mIvMain = (ImageView) findViewById(R.id.iv_main);
+
+        //1.展示图片
 //        showPicsComm(pics);
         showPicsRxJava(pics);
 
+        //2.打印数组字符串
+        printStr(str_names);
+
+        //3.根据资源id展示图片
+        showPicFromResId(drawableId);
     }
 
     private void showPicsComm(final Integer[] pics) {
@@ -63,5 +86,39 @@ public class MainActivity extends AppCompatActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(bitmap -> {mIcvMain.addImage(bitmap);});
+    }
+
+    private void printStr(String[] str_names) {
+        Observable.from(str_names)
+                .subscribe(s -> {
+                    Log.d(TAG, s);
+                });
+    }
+
+    private void showPicFromResId(int drawableId) {
+        Observable.create(new Observable.OnSubscribe<Drawable>() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public void call(Subscriber<? super Drawable> subscriber) {
+                Drawable drawable = getDrawable(drawableId);
+                subscriber.onNext(drawable);
+                subscriber.onCompleted();
+            }
+        }).subscribe(new Subscriber<Drawable>() {
+            @Override
+            public void onNext(Drawable drawable) {
+                mIvMain.setImageDrawable(drawable);
+            }
+
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Toast.makeText(MainActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

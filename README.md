@@ -23,7 +23,17 @@
         observable.subscribe(observer)
         或observable.subscribe(subscriber)
 
-###
+###Samples(同步)
+            //1.展示图片
+    //        showPicsComm(pics);
+            showPicsRxJava(pics);
+
+            //2.打印数组字符串
+            printStr(str_names);
+
+            //3.根据资源id展示图片
+            showPicFromResId(drawableId);
+
 
 
 
