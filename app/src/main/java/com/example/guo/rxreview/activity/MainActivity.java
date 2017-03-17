@@ -16,12 +16,10 @@ import com.example.guo.rxreview.utils.BitmapUtil;
 import com.example.guo.rxreview.weiget.ImageCollectorView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
