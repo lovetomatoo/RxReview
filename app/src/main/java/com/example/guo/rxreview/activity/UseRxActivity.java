@@ -3,6 +3,7 @@ package com.example.guo.rxreview.activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -23,7 +24,7 @@ public class UseRxActivity extends AppCompatActivity {
         setContentView(R.layout.activity_userxjava);
 
         mRvUse = (RecyclerView) findViewById(R.id.rv_use);
-        mRvUse.setLayoutManager(new LinearLayoutManager(this));
+        mRvUse.setLayoutManager(new GridLayoutManager(this, 2));
         mRvUse.setAdapter(new UseRxAdapter());
     }
 }
