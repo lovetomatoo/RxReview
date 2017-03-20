@@ -9,13 +9,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.guo.rxreview.R;
-import com.example.guo.rxreview.activity.UseRxActivity;
+
+import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
-import rx.android.plugins.RxAndroidPlugins;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.functions.Func2;
+import rx.android.schedulers.AndroidSchedulers;
 
 
 /**
@@ -26,7 +24,7 @@ public class UseRxAdapter extends RecyclerView.Adapter<UseRxAdapter.Holder> {
 
     private static final String TAG = UseRxAdapter.class.getSimpleName();
 
-    String[] mArray = {"数据变换", "www", "eee", "rrr",
+    String[] mArray = {"数据变换", "延迟处理事件", "eee", "rrr",
             "qqq", "www", "eee", "rrr",
             "qqq", "www", "eee", "rrr",
             "qqq", "www", "eee", "rrr",
@@ -43,9 +41,9 @@ public class UseRxAdapter extends RecyclerView.Adapter<UseRxAdapter.Holder> {
     public void onBindViewHolder(Holder holder, int position) {
         holder.mTvTitle.setText(mArray[position]);
         holder.mLlItemRvRoot.setOnClickListener(v -> {
-            Toast.makeText(holder.mLlItemRvRoot.getContext(), "item__" + position, Toast.LENGTH_SHORT).show();
+            Toast.makeText(holder.mLlItemRvRoot.getContext(), mArray[position], Toast.LENGTH_SHORT).show();
             switch (position) {
-                case 0://数据变换
+                case 0://data change
                     Observable.just("1", "2", "3", "2", "4", "5", "5", "6", "7")
                             .map(Integer::parseInt)
                             .filter(integer -> integer > 3)
@@ -55,7 +53,13 @@ public class UseRxAdapter extends RecyclerView.Adapter<UseRxAdapter.Holder> {
                             .subscribe(integer -> {
                                 Log.i(TAG, "integer == " + integer);
                             });
+                    break;
 
+                case 1://delayed handle event
+                    Observable.timer(2, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
+                            .subscribe(aLong -> {
+                                holder.mTvTitle.setText("延迟处理事件__完成");
+                            });
                     break;
             }
         });
