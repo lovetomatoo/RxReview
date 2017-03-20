@@ -9,12 +9,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.guo.rxreview.R;
+import com.example.guo.rxreview.model.TestJsonBean;
+import com.example.guo.rxreview.utils.JsonUtil;
 
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 
@@ -26,12 +29,9 @@ public class UseRxAdapter extends RecyclerView.Adapter<UseRxAdapter.Holder> {
 
     private static final String TAG = UseRxAdapter.class.getSimpleName();
 
-    String[] mArray = {"数据变换", "延迟处理事件", "周期性操作", "rrr",
-            "qqq", "www", "eee", "rrr",
-            "qqq", "www", "eee", "rrr",
-            "qqq", "www", "eee", "rrr",
-            "qqq", "www", "eee", "rrr",
-            "qqq", "www", "eee", "rrr"};
+    private String[] mArray = {"数据变换", "延迟处理事件", "周期性操作", "线程切换"};
+
+    private String mJsonPath = "testjson.json";
 
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -73,6 +73,15 @@ public class UseRxAdapter extends RecyclerView.Adapter<UseRxAdapter.Holder> {
                             });
                     break;
 
+                case 3://thread change
+                    Observable.just(mJsonPath)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .map(s -> JsonUtil.getJsonFromAssets(holder.mTvTitle.getContext(), s))
+                            .subscribe(s -> {
+                                Toast.makeText(holder.mTvTitle.getContext(), s, Toast.LENGTH_SHORT).show();
+                            });
+                    break;
             }
         });
     }
