@@ -14,6 +14,8 @@ import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 
 /**
@@ -24,7 +26,7 @@ public class UseRxAdapter extends RecyclerView.Adapter<UseRxAdapter.Holder> {
 
     private static final String TAG = UseRxAdapter.class.getSimpleName();
 
-    String[] mArray = {"数据变换", "延迟处理事件", "eee", "rrr",
+    String[] mArray = {"数据变换", "延迟处理事件", "周期性操作", "rrr",
             "qqq", "www", "eee", "rrr",
             "qqq", "www", "eee", "rrr",
             "qqq", "www", "eee", "rrr",
@@ -45,6 +47,8 @@ public class UseRxAdapter extends RecyclerView.Adapter<UseRxAdapter.Holder> {
             switch (position) {
                 case 0://data change
                     Observable.just("1", "2", "3", "2", "4", "5", "5", "6", "7")
+                            .subscribeOn(Schedulers.io())//handle data in io thread
+                            .observeOn(AndroidSchedulers.mainThread())//show data in UI thread
                             .map(Integer::parseInt)
                             .filter(integer -> integer > 3)
                             .distinct()
@@ -61,6 +65,14 @@ public class UseRxAdapter extends RecyclerView.Adapter<UseRxAdapter.Holder> {
                                 holder.mTvTitle.setText("延迟处理事件__完成");
                             });
                     break;
+
+                case 2://circulate handle event
+                    Observable.interval(2, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
+                            .subscribe(aLong -> {
+                                holder.mTvTitle.setText("周期性操作_" + System.currentTimeMillis());
+                            });
+                    break;
+
             }
         });
     }
