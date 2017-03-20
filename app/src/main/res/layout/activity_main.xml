@@ -1,24 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <com.example.guo.rxreview.weiget.ImageCollectorView
-        android:id="@+id/icv_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <ImageView
-        android:id="@+id/iv_sec_main"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" />
+        android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/iv_thr_main"
-        android:layout_width="wrap_content"
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:text="rxjava入门篇" />
+
+        <com.example.guo.rxreview.weiget.ImageCollectorView
+            android:id="@+id/icv_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/iv_sec_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" />
+
+        <ImageView
+            android:id="@+id/iv_thr_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_to_use"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" />
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorAccent"
+        android:text="rxjava使用场景篇" />
 
-</LinearLayout>
+</RelativeLayout>

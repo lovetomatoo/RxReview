@@ -1,5 +1,6 @@
 package com.example.guo.rxreview.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -7,6 +8,8 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -34,13 +37,14 @@ import static com.example.guo.rxreview.model.Student.*;
  * 熟悉rxjava的使用场景
  */
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private ImageCollectorView mIcvMain;
     private ImageView mIvSecMain;
     private ImageView mIvThrMain;
+    private Button mBtnToUse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +78,9 @@ public class MainActivity extends AppCompatActivity {
         mIcvMain = (ImageCollectorView) findViewById(R.id.icv_main);
         mIvSecMain = (ImageView) findViewById(R.id.iv_sec_main);
         mIvThrMain = (ImageView) findViewById(R.id.iv_thr_main);
+        mBtnToUse = (Button) findViewById(R.id.btn_to_use);
+
+        mBtnToUse.setOnClickListener(this);
 
         //1.展示图片
 //        showPicsComm(pics);
@@ -94,6 +101,15 @@ public class MainActivity extends AppCompatActivity {
         //5.flatMap
         printStudentName(studentList);
         printStudentCourseName(studentList);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_to_use:
+                startActivity(new Intent(this, UseRxActivity.class));
+                break;
+        }
     }
 
     private void showPicsComm(final Integer[] pics) {
