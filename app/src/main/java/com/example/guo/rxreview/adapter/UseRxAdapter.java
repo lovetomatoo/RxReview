@@ -1,6 +1,7 @@
 package com.example.guo.rxreview.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.guo.rxreview.R;
+import com.example.guo.rxreview.activity.UseRxActivity;
+
+import rx.Observable;
+import rx.android.plugins.RxAndroidPlugins;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.functions.Func2;
 
 
 /**
@@ -16,7 +24,9 @@ import com.example.guo.rxreview.R;
 
 public class UseRxAdapter extends RecyclerView.Adapter<UseRxAdapter.Holder> {
 
-    String[] mArray = {"qqq", "www", "eee", "rrr",
+    private static final String TAG = UseRxAdapter.class.getSimpleName();
+
+    String[] mArray = {"数据变换", "www", "eee", "rrr",
             "qqq", "www", "eee", "rrr",
             "qqq", "www", "eee", "rrr",
             "qqq", "www", "eee", "rrr",
@@ -34,6 +44,20 @@ public class UseRxAdapter extends RecyclerView.Adapter<UseRxAdapter.Holder> {
         holder.mTvTitle.setText(mArray[position]);
         holder.mLlItemRvRoot.setOnClickListener(v -> {
             Toast.makeText(holder.mLlItemRvRoot.getContext(), "item__" + position, Toast.LENGTH_SHORT).show();
+            switch (position) {
+                case 0://数据变换
+                    Observable.just("1", "2", "3", "2", "4", "5", "5", "6", "7")
+                            .map(Integer::parseInt)
+                            .filter(integer -> integer > 3)
+                            .distinct()
+                            .take(3)
+                            .reduce((integer, integer2) -> integer + integer2)
+                            .subscribe(integer -> {
+                                Log.i(TAG, "integer == " + integer);
+                            });
+
+                    break;
+            }
         });
     }
 
