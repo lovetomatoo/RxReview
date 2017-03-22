@@ -4,51 +4,51 @@
                 android:layout_height="match_parent">
 
     <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorAccent"
-                android:text="rxjava入门篇"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:text="rxjava入门篇"/>
 
         <com.example.guo.rxreview.weiget.ImageCollectorView
-                android:id="@+id/icv_main"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+            android:id="@+id/icv_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
         <ImageView
-                android:id="@+id/iv_sec_main"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"/>
+            android:id="@+id/iv_sec_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"/>
 
         <ImageView
-                android:id="@+id/iv_thr_main"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"/>
+            android:id="@+id/iv_thr_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"/>
 
     </LinearLayout>
 
     <Button
-            android:id="@+id/btn_to_operator"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:background="@color/colorAccent"
-            android:text="rxjava操作符篇"
-            android:layout_above="@+id/btn_to_use"/>
+        android:id="@+id/btn_to_operator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_to_use"
+        android:layout_marginBottom="10dp"
+        android:background="@color/colorAccent"
+        android:text="rxjava操作符篇"/>
 
     <Button
-            android:layout_marginBottom="10dp"
-            android:id="@+id/btn_to_use"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@color/colorAccent"
-            android:text="rxjava使用场景篇"/>
+        android:id="@+id/btn_to_use"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:background="@color/colorAccent"
+        android:text="rxjava使用场景篇"/>
 
 </RelativeLayout>
