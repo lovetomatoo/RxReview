@@ -9,15 +9,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.guo.rxreview.R;
-import com.example.guo.rxreview.model.TestJsonBean;
 import com.example.guo.rxreview.utils.JsonUtil;
 
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 
