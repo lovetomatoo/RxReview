@@ -29,7 +29,7 @@ public class UseRxAdapter extends RecyclerView.Adapter<UseRxAdapter.Holder> {
 
     private static final String TAG = UseRxAdapter.class.getSimpleName();
 
-    private String[] mArray = {"数据变换", "延迟处理事件", "周期性操作", "线程切换"};
+    private String[] mArray = {"数据变换", "延迟处理事件", "周期性操作", "线程切换", "待续..."};
 
     private String mJsonPath = "testjson.json";
 
@@ -81,6 +81,9 @@ public class UseRxAdapter extends RecyclerView.Adapter<UseRxAdapter.Holder> {
                             .subscribe(s -> {
                                 Toast.makeText(holder.mTvTitle.getContext(), s, Toast.LENGTH_SHORT).show();
                             });
+                    break;
+                case 4:
+                    Toast.makeText(holder.mTvTitle.getContext(), "敬请期待...", Toast.LENGTH_SHORT).show();
                     break;
             }
         });

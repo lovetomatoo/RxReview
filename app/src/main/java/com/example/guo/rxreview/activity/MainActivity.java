@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView mIvSecMain;
     private ImageView mIvThrMain;
     private Button mBtnToUse;
+    private Button mBtnToOperator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,8 +80,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mIvSecMain = (ImageView) findViewById(R.id.iv_sec_main);
         mIvThrMain = (ImageView) findViewById(R.id.iv_thr_main);
         mBtnToUse = (Button) findViewById(R.id.btn_to_use);
+        mBtnToOperator = (Button) findViewById(R.id.btn_to_operator);
 
         mBtnToUse.setOnClickListener(this);
+        mBtnToOperator.setOnClickListener(this);
+
 
         //1.展示图片
 //        showPicsComm(pics);
@@ -108,6 +112,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btn_to_use:
                 startActivity(new Intent(this, UseRxActivity.class));
+                break;
+
+            case R.id.btn_to_operator:
+                startActivity(new Intent(this, OperatorActivity.class));
                 break;
         }
     }
