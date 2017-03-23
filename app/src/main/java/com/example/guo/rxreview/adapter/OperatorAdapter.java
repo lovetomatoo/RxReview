@@ -6,15 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.guo.rxreview.R;
-import com.example.guo.rxreview.utils.JsonUtil;
 
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -45,6 +45,8 @@ public class OperatorAdapter extends RecyclerView.Adapter<OperatorAdapter.Holder
             "TITLE__" + "待续..."};
 
     private static final int TYPE_HEAD = 1;
+
+    private String[] mTestArray = {"11111", "22222", "33333"};
 
     @Override
     public int getItemCount() {
@@ -79,10 +81,76 @@ public class OperatorAdapter extends RecyclerView.Adapter<OperatorAdapter.Holder
             switch (mArray[position]) {
                 case "just":
                     Observable.just(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
-                            .map(integer -> integer + "")
-                            .subscribe(s -> {
-                                Log.i(TAG + "just", s);
+                            .subscribe(integer -> {
+                                Log.i(TAG + "just", integer + "");
                             });
+                    break;
+                case "from":
+                    ArrayList<String> list = new ArrayList<>();
+                    list.add("from__1");
+                    list.add("from__2");
+                    list.add("from__3");
+                    Observable.from(list)
+                            .subscribe(s -> {
+                                Log.i(TAG + "from", s);
+                            });
+                    break;
+                case "repeat":
+//                    Observable.just(1, 2)
+//                            .repeat(5, Schedulers.io())
+//                            .subscribe(integer -> {
+//                                Log.i(TAG + "repeat", integer + "");
+//                            });
+                    Observable.from(mTestArray)
+                            .repeat(2)
+                            .subscribe(s -> {
+                                Log.i(TAG + "repeat", s);
+                            });
+                    break;
+                case "repeatWhen"://暂时有点没明白啊
+                    Observable.just(1, 2)
+                            .repeatWhen(new Func1<Observable<? extends Void>, Observable<?>>() {
+                                @Override
+                                public Observable<?> call(Observable<? extends Void> completed) {
+                                    return Observable.timer(5, TimeUnit.SECONDS);
+                                }
+                            })
+                            .map(new Func1<Integer, String>() {
+                                @Override
+                                public String call(Integer integer) {
+                                    return integer + "";
+                                }
+                            })
+                            .subscribe(new Action1<String>() {
+                                @Override
+                                public void call(String s) {
+                                    Log.i(TAG + "repeatWhen", s);
+                                }
+                            });
+                    break;
+                case "create":
+                    
+                    break;
+                case "defer":
+
+                    break;
+                case "range":
+
+                    break;
+                case "interval":
+
+                    break;
+                case "timer":
+
+                    break;
+                case "empty":
+
+                    break;
+                case "error":
+
+                    break;
+                case "never":
+
                     break;
             }
         });
