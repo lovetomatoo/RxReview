@@ -80,6 +80,7 @@ public class OperatorAdapter extends RecyclerView.Adapter<OperatorAdapter.Holder
 
         holder.mLlItemRvRoot.setOnClickListener(v -> {
             switch (mArray[position]) {
+                //-----------------------------------------------------Creat
                 case "just":
                     Observable.just(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
                             .subscribe(integer -> {
@@ -247,6 +248,37 @@ public class OperatorAdapter extends RecyclerView.Adapter<OperatorAdapter.Holder
                                     Log.i(TAG + "never", o.toString() + "......");
                                 }
                             });
+                    break;
+                //-----------------------------------------------------Chanege
+                case "map":
+
+                    break;
+                case "flatMap":
+
+                    break;
+                case "concatMap":
+
+                    break;
+                case "flatMapIterable":
+
+                    break;
+                case "switchMap":
+
+                    break;
+                case "scan":
+
+                    break;
+                case "groupBy":
+
+                    break;
+                case "buffer":
+
+                    break;
+                case "window":
+
+                    break;
+                case "cast":
+
                     break;
             }
         });
