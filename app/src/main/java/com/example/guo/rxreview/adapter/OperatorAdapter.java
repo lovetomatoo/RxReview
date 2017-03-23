@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.example.guo.rxreview.R;
 
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -18,8 +17,8 @@ import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
 import rx.functions.Action1;
+import rx.functions.Func0;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 
 /**
@@ -87,6 +86,7 @@ public class OperatorAdapter extends RecyclerView.Adapter<OperatorAdapter.Holder
                                 Log.i(TAG + "just", integer + "");
                             });
                     break;
+
                 case "from":
                     ArrayList<String> list = new ArrayList<>();
                     list.add("from__1");
@@ -97,6 +97,7 @@ public class OperatorAdapter extends RecyclerView.Adapter<OperatorAdapter.Holder
                                 Log.i(TAG + "from", s);
                             });
                     break;
+
                 case "repeat":
 //                    Observable.just(1, 2)
 //                            .repeat(5, Schedulers.io())
@@ -109,6 +110,7 @@ public class OperatorAdapter extends RecyclerView.Adapter<OperatorAdapter.Holder
                                 Log.i(TAG + "repeat", s);
                             });
                     break;
+
                 case "repeatWhen"://暂时有点没明白啊
                     Observable.just(1, 2)
                             .repeatWhen(new Func1<Observable<? extends Void>, Observable<?>>() {
@@ -130,6 +132,7 @@ public class OperatorAdapter extends RecyclerView.Adapter<OperatorAdapter.Holder
                                 }
                             });
                     break;
+
                 case "create":
 
                     Observable<String> observable = Observable.create(new Observable.OnSubscribe<String>() {
@@ -141,7 +144,7 @@ public class OperatorAdapter extends RecyclerView.Adapter<OperatorAdapter.Holder
                         }
                     });
 
-                    Observer observer = new Observer<String>() {
+                    Observer<String> observer = new Observer<String>() {
                         @Override
                         public void onCompleted() {
                             Log.i(TAG + "creat", "onCompleted");
@@ -159,28 +162,91 @@ public class OperatorAdapter extends RecyclerView.Adapter<OperatorAdapter.Holder
                     };
 
                     observable.subscribe(observer);
-
                     break;
-                case "defer":
 
+                case "defer"://只有当订阅者订阅才创建Observable；为每个订阅创建一个新的Observable
+                    Observable.defer(() -> Observable.just(1)).map(integer -> integer + "").subscribe(s -> {
+                        Log.i(TAG + "defer", s);
+                    });
                     break;
-                case "range":
 
+                case "range"://创建一个发射指定范围的整数序列的Observable
+                    Observable.range(1, 5)//1 2 3 4 5
+                            .map(integer -> integer + "")
+                            .subscribe(s -> {
+                                Log.i(TAG + "range", s);
+                            });
                     break;
                 case "interval":
-
+                    Observable
+                            .interval(2, TimeUnit.SECONDS)
+                            .subscribe(aLong -> {
+                                Log.i(TAG + "interval", aLong + "");//aLong 第几次
+                            });
                     break;
                 case "timer":
+                    Observable.timer(3, TimeUnit.SECONDS)
+                            .subscribe(aLong -> {
+                                Log.i(TAG + "timer", aLong + "");//aLong == 0
+                            });
 
                     break;
                 case "empty":
+                    Observable.empty()
+                            .subscribe(new Observer<Object>() {
+                                @Override
+                                public void onCompleted() {
+                                    Log.i(TAG + "empty", "empty__onCompleted");
+                                }
 
+                                @Override
+                                public void onError(Throwable e) {
+
+                                }
+
+                                @Override
+                                public void onNext(Object o) {
+
+                                }
+                            });
                     break;
                 case "error":
+                    Observable.error(new Throwable("自定义"))
+                            .subscribe(new Subscriber<Object>() {
+                                @Override
+                                public void onCompleted() {
 
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    Log.i(TAG + "error", e.getMessage());
+                                }
+
+                                @Override
+                                public void onNext(Object o) {
+
+                                }
+                            });
                     break;
                 case "never":
+                    Observable.never()//回调都不走，搞不懂
+                            .subscribe(new Subscriber<Object>() {
+                                @Override
+                                public void onCompleted() {
+                                    Log.i(TAG + "never", "......");
+                                }
 
+                                @Override
+                                public void onError(Throwable e) {
+                                    Log.i(TAG + "never", e.toString() + "......");
+                                }
+
+                                @Override
+                                public void onNext(Object o) {
+                                    Log.i(TAG + "never", o.toString() + "......");
+                                }
+                            });
                     break;
             }
         });
