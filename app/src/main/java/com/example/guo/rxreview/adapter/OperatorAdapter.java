@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
+import rx.Observer;
+import rx.Subscriber;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -129,7 +131,35 @@ public class OperatorAdapter extends RecyclerView.Adapter<OperatorAdapter.Holder
                             });
                     break;
                 case "create":
-                    
+
+                    Observable<String> observable = Observable.create(new Observable.OnSubscribe<String>() {
+                        @Override
+                        public void call(Subscriber<? super String> subscriber) {
+                            subscriber.onNext("create_onNext");
+                            subscriber.onCompleted();
+                            subscriber.onError(new Throwable());
+                        }
+                    });
+
+                    Observer observer = new Observer<String>() {
+                        @Override
+                        public void onCompleted() {
+                            Log.i(TAG + "creat", "onCompleted");
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(String s) {
+                            Log.i(TAG + "creat", s);
+                        }
+                    };
+
+                    observable.subscribe(observer);
+
                     break;
                 case "defer":
 
