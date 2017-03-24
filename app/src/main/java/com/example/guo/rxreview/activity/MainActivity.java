@@ -221,8 +221,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         return Observable.from(student.courseList);
                     }
                 })
-                .subscribe(course -> {
-                    Log.i(TAG, course.courseName);
+                .map(course -> course.courseName)
+                .subscribe(courseName -> {
+                    Log.i(TAG, courseName);
                 });
     }
 

@@ -251,9 +251,24 @@ public class OperatorAdapter extends RecyclerView.Adapter<OperatorAdapter.Holder
                     break;
                 //-----------------------------------------------------Chanege
                 case "map":
-
+                    Observable.from(mTestArray)
+                            .map(s -> s + "__map")
+                            .subscribe(s -> {
+                                Log.i(TAG + "map", s);
+                            });
                     break;
                 case "flatMap":
+                    Observable.from(mTestArray)
+                            .flatMap(new Func1<String, Observable<String>>() {
+                                @Override
+                                public Observable<String> call(String s) {
+                                    return Observable.just(s);
+                                }
+                            })
+                            .map(s -> s + "__floatMap")
+                            .subscribe(s -> {
+                                Log.i(TAG + "floatMap", s);
+                            });
 
                     break;
                 case "concatMap":
