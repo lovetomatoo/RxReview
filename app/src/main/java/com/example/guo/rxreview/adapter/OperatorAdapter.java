@@ -11,6 +11,7 @@ import com.example.guo.rxreview.R;
 
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
@@ -272,9 +273,19 @@ public class OperatorAdapter extends RecyclerView.Adapter<OperatorAdapter.Holder
 
                     break;
                 case "concatMap":
+                    Observable.from(mTestArray)
+                            .concatMap(new Func1<String, Observable<String>>() {
+                                @Override
+                                public Observable<String> call(String s) {
+                                    return Observable.just(s);
+                                }
+                            })
+                            .map(s -> s + "__concatMap")
+                            .subscribe(s -> {
+                                Log.i(TAG + "concatMap", s);
+                            });
 
-                    break;
-                case "flatMapIterable":
+                case "flatMapIterable"://shit
 
                     break;
                 case "switchMap":
