@@ -1,29 +1,28 @@
 package com.example.guo.rxreview.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
+import android.view.ViewGroup;
+import android.view.View;
+import android.util.Log;
 
 import com.example.guo.rxreview.R;
 
-
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
 
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.Subscriber;
 import rx.Observable;
 import rx.Observer;
-import rx.Subscriber;
-import rx.functions.Action1;
-import rx.functions.Func0;
-import rx.functions.Func1;
-
 
 /**
  * Created by guo_hx on 2017/3/20 10:41.
+ *
+ * 想念那年 偷偷看你侧脸，你装作 无辜表情的心不在焉。
+ *
  */
 
 public class OperatorAdapter extends RecyclerView.Adapter<OperatorAdapter.Holder> {
