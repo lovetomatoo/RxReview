@@ -15,6 +15,8 @@ import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 
@@ -64,9 +66,30 @@ public class UseRxAdapter extends RecyclerView.Adapter<UseRxAdapter.Holder> {
                     break;
 
                 case 2://circulate handle event
-                    Observable.interval(2, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
-                            .subscribe(aLong -> {
-                                holder.mTvTitle.setText("周期性操作_" + System.currentTimeMillis());
+//                    Observable.interval(2, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
+//                            .subscribe(aLong -> {
+//                                holder.mTvTitle.setText("周期性操作_" + System.currentTimeMillis());
+//                            });
+//                    Observable.interval(10, 1, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
+//                            .subscribe(aLong -> {
+//                                holder.mTvTitle.setText("周期性操作_" + aLong);
+//                            });
+                    Observable.interval(0, 1, TimeUnit.SECONDS)
+                            .subscribeOn(AndroidSchedulers.mainThread())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .map(new Func1<Long, Integer>() {
+                                @Override
+                                public Integer call(Long increaseTime) {
+                                    return 10 - increaseTime.intValue();
+                                }
+                            })
+                            .take(11)
+                            .subscribe(new Action1<Integer>() {
+                                @Override
+                                public void call(Integer integer) {
+//                                    mTvLook.setText("查看本局数据" + integer);
+                                    holder.mTvTitle.setText("周期性操作_" + integer);
+                                }
                             });
                     break;
 

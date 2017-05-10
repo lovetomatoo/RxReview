@@ -1,5 +1,7 @@
 package com.example.guo.rxreview.adapter;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.widget.TextView;
@@ -9,6 +11,7 @@ import android.util.Log;
 
 import com.example.guo.rxreview.R;
 
+import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 
@@ -17,6 +20,7 @@ import rx.functions.Func1;
 import rx.Subscriber;
 import rx.Observable;
 import rx.Observer;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by guo_hx on 2017/3/20 10:41.
@@ -28,6 +32,8 @@ import rx.Observer;
 public class OperatorAdapter extends RecyclerView.Adapter<OperatorAdapter.Holder> {
 
     private static final String TAG = OperatorAdapter.class.getSimpleName();
+
+    private String str_test = "学java";
 
     private String[] mArray = {"TITLE__" + "Creating 创建操作", "just", "from", "repeat", "repeatWhen", "create", "defer", "range", "interval", "timer", "empty", "error", "never",
             "TITLE__" + "Creating Transforming 变换操作", "map", "flatMap", "concatMap", "flatMapIterable", "switchMap", "scan", "groupBy", "buffer", "window", "cast",
@@ -47,7 +53,7 @@ public class OperatorAdapter extends RecyclerView.Adapter<OperatorAdapter.Holder
 
     private static final int TYPE_HEAD = 1;
 
-    private String[] mTestArray = {"11111", "22222", "33333"};
+    private Integer[] mTestArray = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
 
     @Override
     public int getItemCount() {
@@ -74,6 +80,7 @@ public class OperatorAdapter extends RecyclerView.Adapter<OperatorAdapter.Holder
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onBindViewHolder(Holder holder, int position) {
         holder.mTvTitle.setText(mArray[position]);
@@ -108,7 +115,7 @@ public class OperatorAdapter extends RecyclerView.Adapter<OperatorAdapter.Holder
                     Observable.from(mTestArray)
                             .repeat(2)
                             .subscribe(s -> {
-                                Log.i(TAG + "repeat", s);
+                                Log.i(TAG + "repeat", s + "");
                             });
                     break;
 
@@ -257,31 +264,33 @@ public class OperatorAdapter extends RecyclerView.Adapter<OperatorAdapter.Holder
                                 Log.i(TAG + "map", s);
                             });
                     break;
-                case "flatMap":
+                case "flatMap"://map flatmap concatmap 的区别
                     Observable.from(mTestArray)
-                            .flatMap(new Func1<String, Observable<String>>() {
+                            .subscribeOn(Schedulers.io())
+                            .flatMap(new Func1<Integer, Observable<Integer>>() {
                                 @Override
-                                public Observable<String> call(String s) {
-                                    return Observable.just(s);
+                                public Observable<Integer> call(Integer s) {
+                                    return Observable.just(s * s);
                                 }
                             })
                             .map(s -> s + "__floatMap")
+                            .subscribeOn(Schedulers.io())
                             .subscribe(s -> {
-                                Log.i(TAG + "floatMap", s);
+                                Log.i(TAG + "floatMap", s + Thread.currentThread().getName());
                             });
 
                     break;
                 case "concatMap":
                     Observable.from(mTestArray)
-                            .concatMap(new Func1<String, Observable<String>>() {
+                            .concatMap(new Func1<Integer, Observable<Integer>>() {
                                 @Override
-                                public Observable<String> call(String s) {
+                                public Observable<Integer> call(Integer s) {
                                     return Observable.just(s);
                                 }
                             })
-                            .map(s -> s + "__concatMap")
+                            .map(s -> s * s + "__concatMap")
                             .subscribe(s -> {
-                                Log.i(TAG + "concatMap", s);
+                                Log.i(TAG + "concatMap", s + Thread.currentThread().getName());
                             });
 
                 case "flatMapIterable"://shit
