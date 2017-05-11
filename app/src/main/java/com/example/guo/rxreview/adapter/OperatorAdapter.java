@@ -11,7 +11,6 @@ import android.util.Log;
 
 import com.example.guo.rxreview.R;
 
-import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 
