@@ -23,9 +23,8 @@ import rx.schedulers.Schedulers;
 
 /**
  * Created by guo_hx on 2017/3/20 10:41.
- *
+ * <p>
  * 想念那年 偷偷看你侧脸，你装作 无辜表情的心不在焉。
- *
  */
 
 public class OperatorAdapter extends RecyclerView.Adapter<OperatorAdapter.Holder> {
