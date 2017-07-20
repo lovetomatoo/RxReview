@@ -11,6 +11,9 @@ import android.util.Log;
 
 import com.example.guo.rxreview.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 
@@ -51,7 +54,7 @@ public class OperatorAdapter extends RecyclerView.Adapter<OperatorAdapter.Holder
 
     private static final int TYPE_HEAD = 1;
 
-    private Integer[] mTestArray = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+    private Integer[] mTestArray = {1, 2, 3, 4, 5};
 
     @Override
     public int getItemCount() {
@@ -255,14 +258,14 @@ public class OperatorAdapter extends RecyclerView.Adapter<OperatorAdapter.Holder
                             });
                     break;
                 //-----------------------------------------------------Chanege
-                case "map":
+                case "map"://map flatmap concatmap 的区别
                     Observable.from(mTestArray)
                             .map(s -> s + "__map")
                             .subscribe(s -> {
                                 Log.i(TAG + "map", s);
                             });
                     break;
-                case "flatMap"://map flatmap concatmap 的区别
+                case "flatMap"://flatMap采用的是merge， 无序的， 输出结果与原序列不一定保持一致
                     Observable.from(mTestArray)
                             .subscribeOn(Schedulers.io())
                             .flatMap(new Func1<Integer, Observable<Integer>>() {
@@ -278,15 +281,15 @@ public class OperatorAdapter extends RecyclerView.Adapter<OperatorAdapter.Holder
                             });
 
                     break;
-                case "concatMap":
+                case "concatMap"://concatMap采用的是concat， 有序的，输出结果与原序列保持一致
                     Observable.from(mTestArray)
                             .concatMap(new Func1<Integer, Observable<Integer>>() {
                                 @Override
                                 public Observable<Integer> call(Integer s) {
-                                    return Observable.just(s);
+                                    return Observable.just(s * s);
                                 }
                             })
-                            .map(s -> s * s + "__concatMap")
+                            .map(s -> s + "__concatMap")
                             .subscribe(s -> {
                                 Log.i(TAG + "concatMap", s + Thread.currentThread().getName());
                             });
@@ -310,6 +313,15 @@ public class OperatorAdapter extends RecyclerView.Adapter<OperatorAdapter.Holder
 
                     break;
                 case "cast":
+
+                    String strJson = "{code:1}";
+
+                    try {
+                        JSONObject jsonObject = new JSONObject(strJson);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
                     break;
             }
