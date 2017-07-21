@@ -34,7 +34,7 @@ public class OperatorAdapter extends RecyclerView.Adapter<OperatorAdapter.Holder
 
     private static final String TAG = OperatorAdapter.class.getSimpleName();
 
-    private String str_test = "学java";
+    private String str_txt = "rxjava";
 
     private String[] mArray = {"TITLE__" + "Creating 创建操作", "just", "from", "repeat", "repeatWhen", "create", "defer", "range", "interval", "timer", "empty", "error", "never",
             "TITLE__" + "Creating Transforming 变换操作", "map", "flatMap", "concatMap", "flatMapIterable", "switchMap", "scan", "groupBy", "buffer", "window", "cast",
@@ -54,7 +54,7 @@ public class OperatorAdapter extends RecyclerView.Adapter<OperatorAdapter.Holder
 
     private static final int TYPE_HEAD = 1;
 
-    private Integer[] mTestArray = {1, 2, 3, 4, 5};
+    private Integer[] mNumberArray = {1, 2, 3, 4, 5};
 
     @Override
     public int getItemCount() {
@@ -113,7 +113,7 @@ public class OperatorAdapter extends RecyclerView.Adapter<OperatorAdapter.Holder
 //                            .subscribe(integer -> {
 //                                Log.i(TAG + "repeat", integer + "");
 //                            });
-                    Observable.from(mTestArray)
+                    Observable.from(mNumberArray)
                             .repeat(2)
                             .subscribe(s -> {
                                 Log.i(TAG + "repeat", s + "");
@@ -259,14 +259,14 @@ public class OperatorAdapter extends RecyclerView.Adapter<OperatorAdapter.Holder
                     break;
                 //-----------------------------------------------------Chanege
                 case "map"://map flatmap concatmap 的区别
-                    Observable.from(mTestArray)
+                    Observable.from(mNumberArray)
                             .map(s -> s + "__map")
                             .subscribe(s -> {
                                 Log.i(TAG + "map", s);
                             });
                     break;
                 case "flatMap"://flatMap采用的是merge， 无序的， 输出结果与原序列不一定保持一致
-                    Observable.from(mTestArray)
+                    Observable.from(mNumberArray)
                             .subscribeOn(Schedulers.io())
                             .flatMap(new Func1<Integer, Observable<Integer>>() {
                                 @Override
@@ -282,7 +282,7 @@ public class OperatorAdapter extends RecyclerView.Adapter<OperatorAdapter.Holder
 
                     break;
                 case "concatMap"://concatMap采用的是concat， 有序的，输出结果与原序列保持一致
-                    Observable.from(mTestArray)
+                    Observable.from(mNumberArray)
                             .concatMap(new Func1<Integer, Observable<Integer>>() {
                                 @Override
                                 public Observable<Integer> call(Integer s) {
@@ -295,10 +295,45 @@ public class OperatorAdapter extends RecyclerView.Adapter<OperatorAdapter.Holder
                             });
 
                 case "flatMapIterable"://shit
+                    Observable.from(mNumberArray)
+                            .flatMapIterable(new Func1<Integer, Iterable<Integer>>() {
+                                @Override
+                                public Iterable<Integer> call(Integer integer) {
+                                    ArrayList<Integer> integers = new ArrayList<>();
+                                    for (int i = 0; i < integer; i++) {
+                                        integers.add(integer);
+                                    }
+                                    return integers;
+                                }
+                            })
+                            .map(new Func1<Integer, String>() {
+                                @Override
+                                public String call(Integer integer) {
+                                    return "flatMapIterable" + integer;
+                                }
+                            })
+                            .subscribe(new Action1<String>() {
+                                @Override
+                                public void call(String s) {
+                                    Log.d(TAG, s);
+                                }
+                            });
 
                     break;
                 case "switchMap":
-
+                    Observable.just(1)
+                            .switchMap(new Func1<Integer, Observable<String>>() {
+                                @Override
+                                public Observable<String> call(Integer integer) {
+                                    return Observable.just("switchMap" + integer);
+                                }
+                            })
+                            .subscribe(new Action1<String>() {
+                                @Override
+                                public void call(String s) {
+                                    Log.i(TAG, s);
+                                }
+                            });
                     break;
                 case "scan":
 
